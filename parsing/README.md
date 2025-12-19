@@ -1,1 +1,54 @@
 # Parsing
+
+There's a myriad of ways to implement input parsing. All methods have their strengths and weaknesses, depending on C++ versions, coding styles and industries.
+
+## I.
+
+I'm fond of an implementation that uses C++98's ***std::strtol***(*const char* str*, *const char strend***, *int base*)
+
+~~~
+bool str_to_int98(const std::string &line, int &res) noexcept
+~~~
+function allows us to log what exactly was wrong in the input and handle cases of
+* empty input
+* nonnumeric input
+* numeric input that is followed by trailing nonnumeric garbage
+* overflow for long
+* overflow for int
+
+~~~
+#include <cerrno>
+#include <climits>
+#include <cstdlib>
+#include <cstdio>
+
+bool str_to_int98(const std::string &line, int &res) noexcept {
+    char *end = nullptr;
+    errno = 0;
+    const long value = std::strtol(line.c_str(), &end, 10);
+    if (line.empty()) {
+        std::fputs("line is empty!\n", stderr);
+    } else if (end == line.c_str()) {
+        std::fprintf(stderr, "did not recognize even a single valid digit at the start of the string.\n");
+    } else if (*end != '\0') {
+        std::fputs("numeric result followed by trailing nonnumeric character(s)\n", stderr);
+    } else if (errno == ERANGE) {
+        std::fputs("Overflow or underflow for long\n", stderr);
+    } else if (value < INT_MIN || value > INT_MAX) {
+        std::fprintf(stderr, "Out of range for int\n");
+    } else {
+        // everything's alright
+        res = static_cast<int>(value);
+        return true;
+    }
+    return false;
+}
+~~~
+
+It uses global ***errno*** variable to detect errors in C library calls.
+
+And allows correct conversion without throwing exceptions.
+
+using ***std::fputs*** and ***std::fprintf*** over ***std::cerr*** allows us to guarantee exception-safety and mark the function as ***noexcept***.
+
+Because ***std::cerr/cout*** can potentially raise an exception, ***std::fputs/fprintf*** - can't
