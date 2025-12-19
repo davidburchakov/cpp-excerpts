@@ -95,6 +95,32 @@ Streamstring
 ## V.
 C++17
 std::from_chars
+
+~~~
+    bool str_to_int17(const std::string &line, int &res) {
+        if (line.empty()) {
+            return false;
+        }
+
+        const char* begin = line.data();
+        const char* end   = begin + line.size();
+
+        auto [ptr, ec] = std::from_chars(begin, end, res, 10);
+
+        // No characters consumed or trailing garbage
+        if (ptr != end) {
+            return false;
+        }
+
+        // Invalid input or overflow
+        if (ec != std::errc()) {
+            return false;
+        }
+
+        return true;
+    }
+~~~
+
 // TODO
 
 ## Important links
@@ -103,4 +129,5 @@ std::from_chars
 [what not to do](https://stackoverflow.com/questions/194465/how-to-parse-a-string-to-an-int-in-c/6154614#6154614)
 
 [how to convert str to in stackoverflow thread](https://stackoverflow.com/questions/7663709/how-can-i-convert-a-stdstring-to-int)
+
 
