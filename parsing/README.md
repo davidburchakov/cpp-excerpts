@@ -84,9 +84,12 @@ scanf
 // TODO
 
 ## III. 
-std::atoi
-std::stoi
-// TODO
+**std::atoi()**: Does not perform input validation. If the input string is invalid, it will return 0.
+
+**std::stoi()**: Performs input validation. It throws a std::invalid_argument exception if the input string is not a valid representation of an integer, 
+or a std::out_of_range exception if the converted value exceeds the range of the target type.
+
+info [from](https://stackoverflow.com/a/78462670/17443077)
 
 ## IV.
 Streamstring
@@ -129,5 +132,6 @@ std::from_chars
 [what not to do](https://stackoverflow.com/questions/194465/how-to-parse-a-string-to-an-int-in-c/6154614#6154614)
 
 [how to convert str to in stackoverflow thread](https://stackoverflow.com/questions/7663709/how-can-i-convert-a-stdstring-to-int)
+
 
 
