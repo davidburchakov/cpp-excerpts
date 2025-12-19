@@ -4,7 +4,7 @@ There's a myriad of ways to implement input parsing. All methods have their stre
 
 ## I.
 
-I'm fond of an implementation that uses C++98's ***std::strtol***(*const char* str*, *const char strend***, *int base*)
+I'm fond of an implementation that uses C++98's ***std::strtol***(*const char* str*, *const char **str_end*, *int base*)
 
 ~~~
 bool str_to_int98(const std::string &line, int &res) noexcept
@@ -52,3 +52,29 @@ And allows correct conversion without throwing exceptions.
 using ***std::fputs*** and ***std::fprintf*** over ***std::cerr*** allows us to guarantee exception-safety and mark the function as ***noexcept***.
 
 Because ***std::cerr/cout*** can potentially raise an exception, ***std::fputs/fprintf*** - can't
+
+a [similar](https://en.cppreference.com/w/c/string/byte/strtof.html) function for double that uses std::strtod(const char *str. const char **str_end);
+
+~~~
+    bool str_to_double98(const std::string &line, double &res) noexcept {
+        char *end = nullptr;
+        errno = 0;
+        const double value = std::strtod(line.c_str(), &end);
+        if (line.empty()) {
+            std::fputs("line is empty!\n", stderr);
+        } else if (end == line) {
+            std::fputs("No characters consumed. Did not recognize even "
+                       "a single valid digit at the start of the string\n", stderr);
+        } else if (*end != '\0') {
+            std::fprintf(stderr, "numeric result followed by trailing nonnumeric character(s)\n");
+        } else if (errno == ERANGE) {
+            std::fprintf(stderr, "Overflow or underflow for double\n");
+        } else {
+            // everything's alright
+            res = value;
+            return true;
+        }
+        return false;
+    }
+~~~
+
