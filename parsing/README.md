@@ -81,7 +81,43 @@ a [similar](https://en.cppreference.com/w/c/string/byte/strtof.html) function fo
 
 ## II. 
 scanf
-// TODO
+~~~
+#include <cmath>
+#include <iostream>
+#include <cstdio>
+ 
+bool getInput(int &number, int &result){
+    while (true) {
+        printf("Enter an integer: ");
+        result = scanf("%d", &number);
+ 
+        if (result == 1) {
+            // Successful integer input
+            printf("You entered: %d\n", number);
+            break;
+        } else if (result == EOF) { 
+            // ctrl + D
+            printf("\nNo input detected. Exiting.\n");
+            return false;
+        } else { // scanf return 1 if doesnt match the %d format
+            // Invalid input, clear the input buffer
+            printf("Invalid input. Please enter an integer.\n");
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF) {
+                // discard invalid characters
+            }
+        }
+    }
+    return true;
+}
+ 
+int main(int argc, char *argv[]) {
+    int number;
+    int result;
+    getInput(number, result));
+    return 0;
+}
+~~~
 
 ## III.
 std::cin
@@ -208,6 +244,7 @@ std::from_chars
 [what not to do](https://stackoverflow.com/questions/194465/how-to-parse-a-string-to-an-int-in-c/6154614#6154614)
 
 [how to convert str to in stackoverflow thread](https://stackoverflow.com/questions/7663709/how-can-i-convert-a-stdstring-to-int)
+
 
 
 
