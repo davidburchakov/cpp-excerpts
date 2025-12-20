@@ -83,7 +83,44 @@ a [similar](https://en.cppreference.com/w/c/string/byte/strtof.html) function fo
 scanf
 // TODO
 
-## III. 
+## III.
+std::cin
+
+~~~
+// will accept input with trailing nonnumerical character(s)
+// Will fail ctrl+D on linux 
+bool getDouble(double &number) {
+    if (!(std::cin >> number)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::fputs("Invalid input!\n", stderr);
+        return false;
+    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::fputs("Data is successfully provided: ", stdout);
+    std::fprintf(stdout, "%.2f\n", number);
+    return true;
+}
+ 
+int main(int argc, char *argv[]) {
+    double number;
+ 
+    while (true) {
+        std::cout << "Please enter a decimal number" << std::endl;
+ 
+        if (!getDouble(number)) { 
+            if (std::cin.eof()) { // guard from ctrl+D
+                std::cout << "End of input. Exiting.\n";
+                break;
+            }
+        } else {
+            break;
+        }
+    }
+}
+~~~
+
+## IV. 
 **std::atoi()**: Does not perform input validation. If the input string is invalid, it will return 0.
 
 **std::stoi()**: Performs input validation. It throws a std::invalid_argument exception if the input string is not a valid representation of an integer, 
@@ -91,11 +128,11 @@ or a std::out_of_range exception if the converted value exceeds the range of the
 
 info [from](https://stackoverflow.com/a/78462670/17443077)
 
-## IV.
+## V.
 Streamstring
 // TODO 
 
-## V.
+## VI.
 C++17
 std::from_chars
 
@@ -132,6 +169,7 @@ std::from_chars
 [what not to do](https://stackoverflow.com/questions/194465/how-to-parse-a-string-to-an-int-in-c/6154614#6154614)
 
 [how to convert str to in stackoverflow thread](https://stackoverflow.com/questions/7663709/how-can-i-convert-a-stdstring-to-int)
+
 
 
 
