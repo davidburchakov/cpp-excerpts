@@ -129,8 +129,47 @@ or a std::out_of_range exception if the converted value exceeds the range of the
 info [from](https://stackoverflow.com/a/78462670/17443077)
 
 ## V.
-Streamstring
-// TODO 
+stringstream
+
+~~~
+#include <limits>
+#include <iostream>
+#include <sstream>
+#include <string>
+ 
+bool read_double(double& value) {
+    std::string line;
+    if (!std::getline(std::cin, line)) {
+        return false; // EOF or ctrl+D
+    }
+    std::stringstream ss(line);
+    if (!(ss >> value)) { // failed to convert, probably nonnumerical chars or empty
+        std::cerr << "Invalid number\n";
+        return false;
+    }
+    // Check for trailing garbage
+    char leftover;
+    if (ss >> leftover) {
+        std::cerr << "Trailing characters detected\n";
+        return false;
+    }
+    return true;
+}
+
+int main() {
+    constexpr int n = 5;
+    double nums[n];
+    std::cout << "Please, provide " << n << " decimal numbers" << std::endl;
+    for (int i = 0; i < n; i++) {
+        std::cout << "Enter a decimal number: \n";
+        while (!read_double(nums[i])) {
+            std::cout << "Invalid input. Exiting.\n";
+            break; //  need this to handle ctrl+D
+        }
+        std::cout << "You entered: " << nums[i] << '\n';
+    }
+}
+~~~
 
 ## VI.
 C++17
@@ -169,6 +208,7 @@ std::from_chars
 [what not to do](https://stackoverflow.com/questions/194465/how-to-parse-a-string-to-an-int-in-c/6154614#6154614)
 
 [how to convert str to in stackoverflow thread](https://stackoverflow.com/questions/7663709/how-can-i-convert-a-stdstring-to-int)
+
 
 
 
