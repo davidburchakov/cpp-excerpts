@@ -55,6 +55,8 @@ Because ***std::cerr/cout*** can potentially raise an exception, ***std::fputs/f
 
 a [similar](https://en.cppreference.com/w/c/string/byte/strtof.html) function for double that uses std::strtod(const char *str. const char **str_end);
 
+[example](https://github.com/davidburchakov/Ravesli/blob/master/part-5/apple_price.cpp) on how to use
+
 ~~~
     bool str_to_double98(const std::string &line, double &res) noexcept {
         char *end = nullptr;
@@ -243,6 +245,7 @@ std::from_chars
 [what not to do](https://stackoverflow.com/questions/194465/how-to-parse-a-string-to-an-int-in-c/6154614#6154614)
 
 [how to convert str to in stackoverflow thread](https://stackoverflow.com/questions/7663709/how-can-i-convert-a-stdstring-to-int)
+
 
 
 
